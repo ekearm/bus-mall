@@ -1,0 +1,43 @@
+#container {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  grid-template-rows: 100px 150px;
+  grid-gap: 10px;
+}
+
+
+#header {
+  grid-column-start: 1;
+  grid-column-end: last;
+  text-align: center;
+  font-size: 5em;
+}
+
+.cell {
+  background: hotpink;
+  text-align:center;
+}
+
+#item1{
+  grid-column-start:1;
+  grid-column-end: 5;
+}
+#item2{
+  grid-column-start:5;
+  grid-column-end: 9;
+}
+#item3{
+  grid-column-start:9;
+  grid-column-end: last;
+}
+#body {
+  grid-column-start:3;
+  grid-column-end: 7;
+  text-align: left;
+}
+
+img {
+  width: auto;
+  height: 100%;
+  text-align: center;
+}

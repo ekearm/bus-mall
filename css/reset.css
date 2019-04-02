@@ -44,4 +44,5 @@ q:before, q:after {
 }
 table {
 	border-collapse: collapse;
-	bo
+	border-spacing: 0;
+}
