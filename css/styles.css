@@ -3,6 +3,9 @@
   grid-template-columns: repeat(12, 1fr);
   grid-template-rows: 100px 150px;
   grid-gap: 10px;
+  font-family: 'Dokdo', cursive;
+  color:yellow;
+  font-size: 1.5em;
 }
 
 
@@ -13,22 +16,26 @@
   font-size: 5em;
 }
 
-.cell {
+.cell{
+  background: hotpink;
+  text-align:center;
+}
+.pressHere{
   background: hotpink;
   text-align:center;
 }
 
-#item1{
-  grid-column-start:1;
-  grid-column-end: 5;
+#item0{
+  grid-column-start:2;
+  grid-column-end: 6;
 }
-#item2{
-  grid-column-start:5;
+#item1{
+  grid-column-start:6;
   grid-column-end: 9;
 }
-#item3{
+#item2{
   grid-column-start:9;
-  grid-column-end: last;
+  grid-column-end: 12;
 }
 #body {
   grid-column-start:3;
