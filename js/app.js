@@ -1,4 +1,5 @@
 'use strict';
+
 //Item array
 //Taken from Jeff
 var productArray = [
@@ -80,10 +81,9 @@ function handleClick(e) {
     addCurrentImages();
     if(clicks > 24){
       productContainer.removeEventListener('click', handleClick);
-      createList(clicks);
+      createList();
     }
   }
-  return clicks;
 }
 /*---------------------------------------------------------*/
 /*|                   Function handling:                  |*/
@@ -125,14 +125,82 @@ function createList (){
   var orderedListTag = document.getElementById('listDisplay');
   while (j < productArray.length){
     var listItem = document.createElement('li');
-    console.log(ITEMS[productArray[j][1]].name);
     listItem.textContent = `${ITEMS[productArray[j][1]].itemVote} votes for ${ITEMS[productArray[j][1]].name}`;
     orderedListTag.appendChild(listItem);
     j++;
   }
-  console.log('hello from createList!');
+  createChart();
 }
+/*---------------------------------------------------------*/
+/*|                   Function handling:                  |*/
+/*|                   Create a Chart Body                 |*/
+/*---------------------------------------------------------*/
+function createChart () {
+  var ctx = document.getElementById('chartBody').getContext('2d');
+  var keys = Object.keys(ITEMS);
+  
+  //console.log(productNames.push(ITEMS[keys[0]].name));
+  var voteData = [];
+  var productNames = [];
+  //console.log(ITEMS[keys[]].itemVote);
+  for (var k = 0; k < keys.length; k++){
+    voteData.push(ITEMS[keys[k]].itemVote);
+    productNames.push(ITEMS[keys[k]].name);
+  }
+  var colors = [
+    'rgb(200,200,200)',
+    'rgb(20,120,98)',
+    'rgb(130,6,17)',
+    'rgb(75,0,160)',
+    'rgb(90,123,160)',
+    'rgb(250,1,45)',
+    'rgb(55,190,2)',
+    'rgb(160,200,30)',
+    'rgb(100,14,200)',
+    'rgb(155,200,20)',
+    'rgb(199,54,99)',
+    'rgb(9,99,199)',
+    'rgb(2,22,222)',
+    'rgb(69,134,89)',
+    'rgb(76,13,0)',
+    'rgb(54,253,56)',
+    'rgb(78,94,215)',
+    'rgb(43,222,23)',
+    'rgb(65,43,34)',
+    'rgb(243,35,63)',
+  ];
+  var dataSetItem = {
+    data: voteData,
+    backgroundColor: colors,
+  };
+  var metaData = {labels: productNames,
+    datasets: [dataSetItem]
+  };
+  
 
+  var chartBody = new Chart(ctx, {
+    type:  'bar',
+    data: metaData,
+    options: {
+      title: {
+        display: true,
+        text: 'Products and amount Voted'
+      },
+      legend: {
+        display: false,
+      },
+      scales: {
+        xAxes: [{
+          stacked: true
+        }],
+        yAxes: [{
+          stacked: true
+        }]
+      }
+    },
+  });
+  new Chart(ctx, chartBody);
+}
 
 //Stuff I don't know what to do with!
 
