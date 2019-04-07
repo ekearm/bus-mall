@@ -1,3 +1,9 @@
+body{
+  background: skyblue;
+  background: -webkit-linear-gradient(peachpuff, palevioletred);
+  background:    -moz-linear-gradient(peachpuff, palevioletred);
+  background:         linear-gradient(peachpuff, palevioletred);
+}
 #container {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
