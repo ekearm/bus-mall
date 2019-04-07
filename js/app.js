@@ -29,6 +29,7 @@ var productContainer = document.getElementById('container');
 var clicks = 0;
 var ITEMS = {};
 var currentItems = [];
+var itemName = '';
 var pastItems =[];
 var stateKey = 'voteStatus';
 var stateObject = {
@@ -82,18 +83,21 @@ function handleClick(e) {
     clicks++;
     ITEMS[e.target.id].itemVote++;
     stateObject.clicks = clicks;
-    var name = ITEMS[event.target.id].htmlTag;
+    itemName = ITEMS[event.target.id].htmlTag;
 
-    stateObject[name] = ITEMS[event.target.id].clicks;
-
+    stateObject[itemName] = ITEMS[event.target.id].clicks;
+    setter();
     for(var i = 0; i < 3; i++){
       var itemDivHolder = document.getElementById(`item${i}`);
       itemDivHolder.removeChild(itemDivHolder.lastChild);
     }
+
     addCurrentImages();
     if(clicks > 24){
       productContainer.removeEventListener('click', handleClick);
       createList();
+      setter();
+      return;
     }
   }
 }
@@ -102,6 +106,7 @@ function handleClick(e) {
 /*|                      Random Image                     |*/
 /*---------------------------------------------------------*/
 function randomImageSelector(){
+  //Taken from Jeff during paired programming assignment
   currentItems = [];
 
   while (currentItems[2] === undefined) {
@@ -125,11 +130,12 @@ function randomImageSelector(){
 /*|              Adding the Images to the Page            |*/
 /*---------------------------------------------------------*/
 function addCurrentImages(){
+  setter();
   randomImageSelector();
   for( var i = 0; i < currentItems.length; i++) {
     ITEMS[productArray[currentItems[i]][1]].render(`item${i}`);
   }
-  setter();
+  
 }
 /*---------------------------------------------------------*/
 /*|                   Function handling:                  |*/
@@ -154,10 +160,8 @@ function createChart () {
   var ctx = document.getElementById('chartBody').getContext('2d');
   var keys = Object.keys(ITEMS);
   
-  //console.log(productNames.push(ITEMS[keys[0]].name));
   var voteData = [];
   var productNames = [];
-  //console.log(ITEMS[keys[]].itemVote);
   for (var k = 0; k < keys.length; k++){
     voteData.push(ITEMS[keys[k]].itemVote);
     productNames.push(ITEMS[keys[k]].name);
@@ -228,10 +232,30 @@ function setter() {
 /*|                        The Getter                     |*/
 /*---------------------------------------------------------*/
 function gitter() {
-  // Need to re watch the lecture!
+  //from Jeffs Code with help from Jeff
+  var rawState = localStorage.getItem(stateKey);
+  stateObject = JSON.parse(rawState);
+  
+  currentItems = stateObject.currentItems;
+  pastItems = stateObject.pastItems;
+  clicks = stateObject.clicks;
+
+  for(var i = 0; i < productArray.length; i++){
+
+    itemName = productArray[i][1];
+    if(isNaN(stateObject[itemName])){
+      ITEMS[productArray[i][1]].clicks = 0;
+    }else{
+      ITEMS[productArray[i][1]].clicks = stateObject[itemName];
+    }
+  }
+
 }
 
-
+/*---------------------------------------------------------*/
+/*|                   Function handling:                  |*/
+/*|                   DO ALL THE THINGS                   |*/
+/*---------------------------------------------------------*/
 //Stuff I don't know what to do with that seems important! Maybe put it in a starter function
 
 //click event
@@ -244,3 +268,19 @@ for (var i = 0; i < productArray.length; i++) {
 
 //Starts everything!
 addCurrentImages();
+
+/*---------------------------------------------------------*/
+/*|                   Function handling:                  |*/
+/*|                     Future Ideas                      |*/
+/*---------------------------------------------------------*/
+
+/*
+  1. Orginize bar chart horizontally
+  2. Use random numbers to generate colors
+  3. Orginize Data in decreasing order
+  4. Increase sample size
+  5. After 100 clicks divide votes in 2
+  6. Create 2 functions called Test and Learning
+  7. Pridict votes
+  8. Profit!
+  */
