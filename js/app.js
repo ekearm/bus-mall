@@ -24,12 +24,19 @@ var productArray = [
   ['Water Can', 'waterCan', './img/water-can.jpg'],
   ['Wine Glass', 'wineGlass', './img/wine-glass.jpg'],
 ];
-//local or global I dont know which
+//global variables!
 var productContainer = document.getElementById('container');
 var clicks = 0;
 var ITEMS = {};
 var currentItems = [];
 var pastItems =[];
+var stateKey = 'voteStatus';
+var stateObject = {
+  clicks: 0,
+  pastItems: [],
+  currentItems: [],
+};
+
 /*---------------------------------------------------------*/
 /*|                   Function handling:                  |*/
 /*|                    The Constructor                    |*/
@@ -74,6 +81,11 @@ function handleClick(e) {
   if (e.target.className === 'product'){
     clicks++;
     ITEMS[e.target.id].itemVote++;
+    stateObject.clicks = clicks;
+    var name = ITEMS[event.target.id].htmlTag;
+
+    stateObject[name] = ITEMS[event.target.id].clicks;
+
     for(var i = 0; i < 3; i++){
       var itemDivHolder = document.getElementById(`item${i}`);
       itemDivHolder.removeChild(itemDivHolder.lastChild);
@@ -104,6 +116,8 @@ function randomImageSelector(){
     }
   }
   pastItems = currentItems;
+  stateObject.currentItems = currentItems;
+  stateObject.pastItems = pastItems;
 
 }
 /*---------------------------------------------------------*/
@@ -115,6 +129,7 @@ function addCurrentImages(){
   for( var i = 0; i < currentItems.length; i++) {
     ITEMS[productArray[currentItems[i]][1]].render(`item${i}`);
   }
+  setter();
 }
 /*---------------------------------------------------------*/
 /*|                   Function handling:                  |*/
@@ -133,7 +148,7 @@ function createList (){
 }
 /*---------------------------------------------------------*/
 /*|                   Function handling:                  |*/
-/*|                   Create a Chart Body                 |*/
+/*|                    Create the Chart                   |*/
 /*---------------------------------------------------------*/
 function createChart () {
   var ctx = document.getElementById('chartBody').getContext('2d');
@@ -201,8 +216,23 @@ function createChart () {
   });
   new Chart(ctx, chartBody);
 }
+/*---------------------------------------------------------*/
+/*|                   Function handling:                  |*/
+/*|                        The Setter                     |*/
+/*---------------------------------------------------------*/
+function setter() {
+  localStorage.setItem(stateKey, JSON.stringify(stateObject));
+}
+/*---------------------------------------------------------*/
+/*|                   Function handling:                  |*/
+/*|                        The Getter                     |*/
+/*---------------------------------------------------------*/
+function gitter() {
+  // Need to re watch the lecture!
+}
 
-//Stuff I don't know what to do with!
+
+//Stuff I don't know what to do with that seems important! Maybe put it in a starter function
 
 //click event
 productContainer.addEventListener('click', handleClick);
@@ -211,4 +241,6 @@ productContainer.addEventListener('click', handleClick);
 for (var i = 0; i < productArray.length; i++) {
   new Item(productArray[i][0], productArray[i][1], productArray[i][2]);
 }
+
+//Starts everything!
 addCurrentImages();
